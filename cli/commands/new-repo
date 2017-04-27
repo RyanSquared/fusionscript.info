@@ -23,7 +23,17 @@ desc="$temp"
 mkdir -p "$HOME/repos/$dir"
 cd "$HOME/repos/$dir"
 git init
-echo 'exec git update-server-info' >> .git/hooks/post-update
+echo > .git/hooks/post-update <<EOF
+#!/bin/sh
+
+git update-server-info
+
+cd ..
+mkdir -p rendered
+cd rendered
+rm -rf ${dir}
+git clone ../${dir}
+EOF
 chmod u+x .git/hooks/post-update
 git config --bool core.bare true
 cat > .git/data.json <<EOF
