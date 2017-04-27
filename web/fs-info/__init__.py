@@ -18,7 +18,6 @@ repos_dir = os.environ.get('REPOS_DIR') or "repos"
 def get_values_from(repo, count=10):
     path = os.getcwd()
     os.chdir(repo)
-    print(repo)
     result = subprocess.run([
         "git", "log", "--pretty=format:%ct\x01%an\x01%s", f"-{count}"
         ], stdout=subprocess.PIPE)
@@ -34,7 +33,9 @@ def get_values_from(repo, count=10):
 
 
 def get_repos(directory=repos_dir):
-    return os.listdir(directory)
+    for folder in os.listdir(directory):
+        if folder != "rendered":
+            yield folder
 
 
 @app.route('/updates/<int:limit>')
@@ -48,7 +49,7 @@ def get_updates(limit):
                     break
             else:
                 commits.insert(0, commit)
-    return jsonify(commits[:limit])
+    return jsonify(list(reversed(commits[:limit])))
 
 
 def get_json_for(repo, directory=repos_dir):
