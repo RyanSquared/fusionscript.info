@@ -7,7 +7,7 @@ popd
 
 # Install the `fs-info` package
 pushd web
-sudo -u git pip3 install --user .
+sudo -H -u git pip3 install --user .
 popd
 
 # Preparing for launch
