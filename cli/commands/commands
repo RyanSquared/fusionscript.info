@@ -1,0 +1,3 @@
+pushd $HOME/git-shell-commands >/dev/null
+echo *
+popd >/dev/null

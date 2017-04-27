@@ -1,0 +1,36 @@
+#!/bin/sh
+
+temp=
+read_and_test() {
+	while true; do
+		printf "Please enter value for '%s': " "$1"
+		read temp
+		if [ ! "x$temp" = "x" ]; then
+			break
+		fi
+	done
+}
+
+read_and_test 'Repository Name'
+name="$temp"
+read_and_test 'Repository Directory'
+dir="$temp"
+read_and_test 'Owner'
+owner="$temp"
+read_and_test 'Description'
+desc="$temp"
+
+mkdir -p "$HOME/repos/$dir"
+cd "$HOME/repos/$dir"
+git init
+echo 'exec git update-server-info' >> .git/hooks/post-update
+chmod u+x .git/hooks/post-update
+git config --bool core.bare true
+cat > .git/data.json <<EOF
+{
+	"name": "${name}",
+	"owner": "${owner}",
+	"desc": "${desc}"
+}
+EOF
+exit $?
