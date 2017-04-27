@@ -29,7 +29,7 @@ def get_values_from(repo, count=10):
         value['repo'] = repo.split('/')[-1]
         value['avatar'] = icons[value['author'].lower()]
     os.chdir(path)
-    return values
+    return values[::-1]
 
 
 def get_repos(directory=repos_dir):
@@ -49,7 +49,7 @@ def get_updates(limit):
                     break
             else:
                 commits.insert(0, commit)
-    return jsonify(list(reversed(commits[:limit])))
+    return jsonify(commits[:limit])
 
 
 def get_json_for(repo, directory=repos_dir):
