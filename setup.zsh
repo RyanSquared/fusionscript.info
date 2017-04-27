@@ -45,8 +45,8 @@ sudo -u git tee ~git/.config/fs-info/conf.json <<EOF
 	"port": ${PORT},
 	"compress_response": true,
 	"ssl_options": {
-	    "certfile": "ssl/cert.pem",
-	    "keyfile": "ssl/key.pem"
+	    "certfile": "${CERTFILE:=ssl/cert.pem}",
+	    "keyfile": "${KEYFILE:=ssl/key.pem}"
 	}
 }
 EOF
