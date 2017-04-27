@@ -11,7 +11,7 @@ sudo -H -u git pip3 install --user .
 popd
 
 # Preparing for launch
-sudo -u git mkdir -p ~git/{repos,web,.config/fs-info,ssl}
+sudo -u git mkdir -p ~git/{repos{,/rendered},web,.config/fs-info,ssl}
 
 # Systemd service file
 sudo tee /etc/systemd/system/fs-info-website.service <<EOF
