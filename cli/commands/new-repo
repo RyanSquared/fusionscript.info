@@ -23,14 +23,12 @@ desc="$temp"
 mkdir -p "$HOME/repos/$dir"
 cd "$HOME/repos/$dir"
 git init
-echo > .git/hooks/post-update <<EOF
+cat > .git/hooks/post-update <<EOF
 #!/bin/sh
 
 git update-server-info
 
-cd ..
-mkdir -p rendered
-cd rendered
+cd $HOME/repos/rendered
 rm -rf ${dir}
 git clone ../${dir}
 EOF
