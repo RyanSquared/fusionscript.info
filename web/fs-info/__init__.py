@@ -18,6 +18,7 @@ repos_dir = os.environ.get('REPOS_DIR') or "repos"
 def get_values_from(repo, count=10):
     path = os.getcwd()
     os.chdir(repo)
+    print(repo)
     result = subprocess.run([
         "git", "log", "--pretty=format:%ct\x01%an\x01%s", f"-{count}"
         ], stdout=subprocess.PIPE)
