@@ -1,0 +1,52 @@
+<% extends "page.html" %><!-- vim:set noet sts=0 sw=2 ts=2 foldmethod=marker:-->
+
+<% block body %>
+<div class="mdl-grid">
+	<div class="mdl-cell mdl-cell--12-col">
+		<h2>Frequently Asked Questions</h2>
+
+		<p lg-font>What is FusionScript?</p>
+		<p>
+			FusionScript is a C++, Python, and Lua inspired language written to
+			provide an alternative syntax to Lua. The language (currently) compiles
+			to Lua source and eventually might compile to Lua VM instructions or
+			use a modified Lua VM. The language itself was originally designed by
+			Ryan, and written during a month-long trip to San Francisco. Here are
+			some more points over the language:
+		</p>
+		<ol>
+
+			<li>
+				<b>Dynamic Typing</b>: The (currently unofficial) standard library
+				includes an assertion library that provides a type checking method,
+				<code>assert.is()</code>. It can be used to check the VM type as well
+				as whether a constructed table is an instance of a specific class (or
+				classes it inherits values from) or whether it implements methods
+				specified by an interface.
+			</li>
+
+			<li>
+				<b>Classes and Interfaces</b>: The language, when compiled to Lua
+				source, uses a wrapper method to create <code>class</code> objects that
+				can be called to create an <i>instance</i>. Classes can inherit values
+				and methods from other classes and use an <code>interface</code> to
+				enforce that values implement certain methods.
+			</li>
+
+			<li>
+				<b>Generators</b>: Coroutines that generate values (also called a
+				<i>generator</i> or <i>iterator</i>) can be made easily by appending
+				the keyword <code>async</code> before the function name, and return
+				values using the keyword <code>yield</code>. FusionScript also has
+				support for creating <i>array</i>- and <i>hashmap</i>-like tables using
+				the values from an iterable object (<code>{x in y()}</code> and
+				<code>{x = y for x, y in pairs(z)}</code>)
+			</li>
+
+		</ol>
+	</div>
+</div>
+<% endblock %>
+
+<% block scripts %>
+<% endblock %>
