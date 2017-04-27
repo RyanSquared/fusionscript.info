@@ -1,0 +1,200 @@
+<!DOCTYPE html><!-- vim:set noet sts=0 sw=2 ts=2 foldmethod=marker: -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FusionScript</title>
+		<link rel="stylesheet" href="/static/material.min.css" type="text/css" media="all" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script src="/static/material.min.js"></script>
+		<script src="/static/superagent.min.js"></script>
+		<script src="https://unpkg.com/vue"></script>
+		<style>
+			body {
+				line-height: 1.7em;
+				letter-spacing: 1px;
+			}
+
+			* {
+				cursor: default !important;
+			}
+
+			label.mdl-textfield__label span {
+				margin-left: 8px;
+			}
+
+			.mdl-layout__content {
+				padding: 24px;
+				width: 100%;
+				margin: auto;
+			}
+			[container] {
+				width: 65%;
+				text-align: justify;
+				display: flex;
+				margin: auto;
+			}
+			[lg-font] {
+				font-size: 1.2em;
+			}
+
+			[center] {
+				width: 100%;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+					<span class="mdl-layout-title">FusionScript</span>
+					<div class="mdl-layout-spacer"></div>
+					<nav class="mdl-navigation">
+						<a class="mdl-navigation__link" href="/">Home</a>
+					</nav>
+				</div>
+			</header>
+
+			<div class="mdl-layout__drawer">
+				<span class="mdl-layout-title">Navigation</span>
+				<nav class="mdl-navigation">
+					<a class="mdl-navigation__link" href="/projects">Projects</a>
+					<a class="mdl-navigation__link" href="/issues">Issues Feed</a>
+					<a class="mdl-navigation__link" href="/patches">Link</a>
+					<a class="mdl-navigation__link" href="/faq">FAQ</a>
+					<a class="mdl-navigation__link" href="/licensing">Licensing</a>
+					<hr />
+					<div login-bar>
+						<div class="mdl-textfield mdl-js-textfield">
+							<input class="mdl-textfield__input" type="password" id="login">
+							<label class="mdl-textfield__label" for="login">
+								<span>Authorization</span></label>
+						</div>
+						<span class="mdl-navigation__link">Log In</span>
+					</div>
+				</nav>
+			</div>
+
+			<main class="mdl-layout__content">
+				<div container class="mdl-grid">
+
+					<div class="mdl-cell mdl-cell--7-col">
+						<p lg-font>
+							FusionScript is a scripting language inspired by Python, C++, and
+							Lua and runs on a modified Lua runtime.
+						</p>
+						<p>
+							<a class="mdl-button mdl-js-button mdl-button--raised
+								mdl-js-ripple-effect"
+								href="/projects/fusionscript/web">Getting Started</a>
+							<a class="mdl-button mdl-js-button mdl-button--raised
+								mdl-button--primary mdl-js-ripple-effect"
+								href="/projects/fusionscript">Download Now</a>
+						</p>
+
+						<h4>Code Example</h4><!-- {{{ Code Example -->
+<pre id='vimCodeElement'>
+<span id="L1" class="LineNr"> 1 </span><span class="GruvboxRed">class</span> <span class="GruvboxAqua">Account</span> {
+<span id="L2" class="LineNr"> 2 </span>    __new<span class="GruvboxAqua">(</span>balance <span class="GruvboxAqua">=</span> <span class="GruvboxPurple">0</span><span class="GruvboxAqua">)=&gt;</span> {
+<span id="L3" class="LineNr"> 3 </span>        <span class="GruvboxAqua">@balance</span> <span class="GruvboxAqua">=</span> balance<span class="GruvboxBlue">;</span>
+<span id="L4" class="LineNr"> 4 </span>    }
+<span id="L5" class="LineNr"> 5 </span>
+<span id="L6" class="LineNr"> 6 </span>    deposit<span class="GruvboxAqua">(</span>amount<span class="GruvboxAqua">)=&gt;</span> {
+<span id="L7" class="LineNr"> 7 </span>        <span class="GruvboxAqua">@balance</span> <span class="GruvboxAqua">=</span> <span class="GruvboxAqua">(+</span> <span class="GruvboxAqua">@balance</span> amount<span class="GruvboxAqua">)</span><span class="GruvboxBlue">;</span>
+<span id="L8" class="LineNr"> 8 </span>        <span class="GruvboxRed">return</span> <span class="GruvboxPurple">true</span><span class="GruvboxBlue">;</span>
+<span id="L9" class="LineNr"> 9 </span>    }
+<span id="L10" class="LineNr">10 </span>
+<span id="L11" class="LineNr">11 </span>    withdraw<span class="GruvboxAqua">(</span>amount<span class="GruvboxAqua">)=&gt;</span> {
+<span id="L12" class="LineNr">12 </span>        <span class="GruvboxRed">if</span> <span class="GruvboxAqua">(&gt;</span> amount <span class="GruvboxAqua">@balance</span><span class="GruvboxAqua">)</span>
+<span id="L13" class="LineNr">13 </span>            <span class="GruvboxRed">return</span> <span class="GruvboxPurple">false</span><span class="GruvboxBlue">;</span>
+<span id="L14" class="LineNr">14 </span>        <span class="GruvboxRed">else</span> {
+<span id="L15" class="LineNr">15 </span>            <span class="GruvboxAqua">@balance</span> <span class="GruvboxAqua">=</span> <span class="GruvboxAqua">(-</span> <span class="GruvboxAqua">@balance</span> amount<span class="GruvboxAqua">)</span><span class="GruvboxBlue">;</span>
+<span id="L16" class="LineNr">16 </span>            <span class="GruvboxRed">return</span> <span class="GruvboxPurple">true</span><span class="GruvboxBlue">;</span>
+<span id="L17" class="LineNr">17 </span>        }
+<span id="L18" class="LineNr">18 </span>    }
+<span id="L19" class="LineNr">19 </span>
+<span id="L20" class="LineNr">20 </span>    balance<span class="GruvboxAqua">()=&gt;</span>
+<span id="L21" class="LineNr">21 </span>        <span class="GruvboxRed">return</span> <span class="GruvboxAqua">@balance</span><span class="GruvboxBlue">;</span>
+<span id="L22" class="LineNr">22 </span>}
+<span id="L23" class="LineNr">23 </span>
+<span id="L24" class="LineNr">24 </span>bob <span class="GruvboxAqua">=</span> <span class="GruvboxAqua">Account</span><span class="GruvboxAqua">(</span><span class="GruvboxPurple">500</span><span class="GruvboxAqua">)</span>; <span class="Comment">-- 500</span>
+<span id="L25" class="LineNr">25 </span>bob<span class="GruvboxAqua">:</span>deposit<span class="GruvboxAqua">(</span><span class="GruvboxPurple">600</span><span class="GruvboxAqua">)</span>;   <span class="Comment">-- 1100</span>
+<span id="L26" class="LineNr">26 </span>bob<span class="GruvboxAqua">:</span>withdraw<span class="GruvboxAqua">(</span><span class="GruvboxPurple">1000</span><span class="GruvboxAqua">)</span>; <span class="Comment">-- 100</span>
+<span id="L27" class="LineNr">27 </span><span class="GruvboxPurple">assert</span><span class="GruvboxAqua">(</span>bob<span class="GruvboxAqua">:</span>withdraw<span class="GruvboxAqua">(</span><span class="GruvboxPurple">math.max</span><span class="GruvboxAqua">))</span>; <span class="Comment">-- errors</span>
+</pre><!-- }}} -->
+
+						<hr />
+						<p>
+							This website is also host to several other FusionScript related
+							projects, like <a href="/projects/fs-vim">VIM editor support</a>
+							and <a href="/projects/fs-boilerplate">a boilerplate project</a>.
+							More projects can be viewed at the <a href="/projects">
+							projects page</a>. New projects are approved by Ryan.
+							<!-- ::TODO:: make FusionScript Foundation -->
+						</p>
+					</div>
+
+					<div class="mdl-cell mdl-cell--5-col">
+						<div id="updates" class="mdl-card mdl-shadow--2dp">
+							<div class="mdl-card__title">
+								<h2 class="mdl-card__title-text">Updates</h2>
+							</div>
+							<div class="mdl-card__supporting-text">
+								<div update class="mdl-list">
+									<div class="mdl-list__item mdl-list__item--three-line" v-for="message in messages">
+										<span class="mdl-list__item-primary-content">
+											<img v-bind:src="message.avatar"
+												class="mdl-list__item-avatar" />
+											<span>{{message.author}} <small>{{message.repo}}</small></span>
+											<span class="mdl-list__item-text-body">
+												{{message.content}}
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="mdl-card__actions mdl-card--border">
+								<span class="mdl-button mdl-js-button mdl-button--raised
+									mdl-button--primary mdl-js-ripple-effect"
+									v-on:click="load_updates">Reload Updates</span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+			<footer class="mdl-mini-footer">
+				<div class="mdl-mini-footer__left-section">
+					<a href="https://ryansquared.github.io" class="mdl-logo">More from Ryan</a>
+					<ul class="mdl-mini-footer__link-list">
+						<li><a href="/projects/turbospoon">Turbospoon</a></li>
+						<li><a href="https://github.com/RyanSquared/Blag">Blag</a></li>
+						<li><a href="https://github.com/RyanSquared/Hurricane">Hurricane</a></li>
+						<li><a href="https://github.com/RyanSquared/irc-bot">FuseBot</a></li>
+					</ul>
+				</div>
+			</footer>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+		var updates = new Vue({
+			el: '#updates',
+			data: {
+				messages: [
+					]
+			},
+			methods: {
+				load_updates: function() {
+					superagent.get('/updates').end((response)=> {
+						this.messages = response.body
+					})
+				}
+			}
+		});
+		updates.load_updates();
+		console.log(updates);
+		</script>
+	</body>
+</html>

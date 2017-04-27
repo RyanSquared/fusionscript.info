@@ -1,0 +1,108 @@
+<!DOCTYPE html><!-- vim:set noet sts=0 sw=2 ts=2 foldmethod=marker: -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FusionScript</title>
+		<link rel="stylesheet" href="/static/material.min.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/static/pygments.css" type="text/css" media="all" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script src="/static/material.min.js"></script>
+		<script src="/static/superagent.min.js"></script>
+		<script src="https://unpkg.com/vue"></script>
+		<style>
+			body {
+				line-height: 1.7em;
+				letter-spacing: 1px;
+			}
+
+			* {
+				cursor: default !important;
+			}
+
+			label.mdl-textfield__label span {
+				margin-left: 8px;
+			}
+
+			.mdl-layout__content {
+				padding: 24px;
+				width: 100%;
+				margin: auto;
+			}
+			p {
+				width: 100%;
+			}
+			[container] {
+				width: 65%;
+				text-align: justify;
+				display: flex;
+				margin: auto;
+			}
+			[lg-font] {
+				font-size: 1.2em;
+			}
+
+			[center] {
+				width: 100%;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+			}
+
+			.mdl-card {
+				width: 100%;
+			}
+
+			/* Updates */
+			.mdl-list__item-avatar {
+				border-radius: 0%;
+				border: none;
+			}
+		</style>
+	</head>
+	<body>
+		<% block prebody %>
+		<% endblock %>
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+					<span class="mdl-layout-title">FusionScript</span>
+					<div class="mdl-layout-spacer"></div>
+					<nav class="mdl-navigation">
+						<a class="mdl-navigation__link" href="/">Home</a>
+					</nav>
+				</div>
+			</header>
+
+			<div class="mdl-layout__drawer">
+				<span class="mdl-layout-title">Navigation</span>
+				<nav class="mdl-navigation">
+					<a class="mdl-navigation__link" href="/">Home</a>
+					<a class="mdl-navigation__link" href="/projects.html">Projects</a>
+					<a class="mdl-navigation__link" href="/issues.html">Issues Feed</a>
+					<a class="mdl-navigation__link" href="/patches.html">Link</a>
+					<a class="mdl-navigation__link" href="/faq.html">FAQ</a>
+					<a class="mdl-navigation__link" href="/licensing.html">Licensing</a>
+					<hr />
+					<div login-bar>
+						<div class="mdl-textfield mdl-js-textfield">
+							<input class="mdl-textfield__input" type="password" id="login">
+							<label class="mdl-textfield__label" for="login">
+								<span>Authorization</span></label>
+						</div>
+						<span class="mdl-navigation__link">Log In</span>
+					</div>
+				</nav>
+			</div>
+
+			<main class="mdl-layout__content">
+				<div container>
+					<% block body %>
+					<% endblock %>
+				</div>
+			</main>
+		</div>
+		<% block scripts %>
+		<% endblock %>
+	</body>
+</html>

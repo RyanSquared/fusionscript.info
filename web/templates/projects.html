@@ -1,0 +1,134 @@
+<% extends "page.html" %><!-- vim:set noet sts=0 sw=2 ts=2 foldmethod=marker:-->
+
+<% block prebody %>
+<style>
+dialog {
+	min-width: 45%;
+	min-height: 35%;
+}
+div.mdl-textfield, input {
+	width: 100%;
+}
+</style>
+<dialog id="downloads" class="mdl-dialog">
+	<h4 class="mdl-dialog__title">{{name}} <small>by {{owner}}</h4>
+	<div class="mdl-dialog__content">
+		<p>{{desc}}</p>
+		<div class="mdl-textfield mdl-js-textfield">
+			<span class="mdl-textfield__input" id="clone-url">{{clone_url}}</span>
+		</div>
+	</div>
+	<div class="mdl-dialog__actions mdl-dialog__actions--full-width">
+		<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="copy">Copy URL</button>
+		<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="close">Close</button>
+	</div>
+</dialog>
+<div id="copied-toast" class="mdl-js-snackbar mdl-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button class="mdl-snackbar__action" type="button"></button>
+</div>
+<% endblock %>
+
+<% block body %>
+<style>
+#projects {
+	width: 100%;
+}
+.mdl-list__item {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.mdl-list__item:last-of-type {
+	border-bottom: none;
+}
+</style>
+<div id="projects">
+	<div class="mdl-card mdl-shadow--2dp">
+		<div class="mdl-card__title">
+			<h2 class="mdl-card__title-text">Projects</h2>
+		</div>
+		<div class="mdl-card__supporting-text">
+			<div class="mdl-list">
+				<div class="mdl-list__item mdl-list__item--three-line"
+					 v-for="repo in repos">
+					<span class="mdl-list__item-primary-content">
+						<span>{{repo.name}} <small>{{repo.owner}}</small></span>
+						<span class="mdl-list__item-text-body">{{repo.desc}}</span>
+					</span>
+					<span class="mdl-list__item-secondary-content"
+						v-bind:x-download="repo.target">
+						<a show-download class="mdl-list__item-secondary-action">
+							<i class="material-icons">file_download</i>
+						</a>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% endblock %>
+
+<% block scripts %>
+<script>
+var dialog = new Vue({
+	el: '#downloads',
+	data: {
+		name: "",
+		desc: "",
+		owner: "",
+		clone_url: "",
+	}
+});
+var dialog_dom = document.querySelector('#downloads');
+
+var repos = new Vue({
+	el: '#projects',
+	data: {
+		repos: [],
+		dialog: dialog,
+	},
+
+	methods: {
+		load_repos: function() {
+			superagent.get('/repos').end((response)=> {
+				this.repos = response.body;
+			});
+		}
+	},
+
+	updated: function() {
+		document.querySelectorAll('[show-download]').forEach((obj)=> {
+			obj.onclick = function() {
+				superagent
+					.get('/repos/' + obj.parentNode.getAttribute("x-download") + '/data')
+					.end((response)=> {
+						for (var property in response.body)
+							if (response.body.hasOwnProperty(property))
+								dialog[property] = response.body[property];
+						dialog_dom.showModal();
+					});
+			}
+		});
+	}
+});
+repos.load_repos();
+
+document.querySelector('#copy').onclick = function() {
+	var range = document.createRange(),
+		selection = window.getSelection(),
+		toaster = document.querySelector('#copied-toast');
+	selection.removeAllRanges();
+	range.selectNodeContents(document.querySelector('#clone-url'));
+	selection.addRange(range);
+	document.execCommand('copy');
+	selection.removeAllRanges();
+	toaster.MaterialSnackbar.showSnackbar({
+		message: "Copied to clipboard"
+	});
+
+	dialog_dom.close();
+}
+document.querySelector('#close').onclick = function() {
+	dialog_dom.close();
+}
+</script>
+<% endblock %>

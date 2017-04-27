@@ -1,0 +1,83 @@
+<% extends "page.html" %><!-- vim:set noet sts=0 sw=2 ts=2 foldmethod=marker:-->
+
+<% block body %>
+<div class="mdl-grid">
+
+	<div class="mdl-cell mdl-cell--7-col">
+		<p lg-font>
+		FusionScript is a scripting language inspired by Python, C++, and
+		Lua and runs on a modified Lua runtime.
+		</p>
+		<p>
+		<a class="mdl-button mdl-js-button mdl-button--raised
+			mdl-js-ripple-effect"
+			href="/web/fusionscript/">Getting Started</a>
+		<a class="mdl-button mdl-js-button mdl-button--raised
+			mdl-button--primary mdl-js-ripple-effect"
+			href="/projects.html#fusionscript">Download Now</a>
+		</p>
+
+		<h4>Code Example</h4><!-- {{{ Code Example -->
+		<div class="mdl-shadow--2dp"><< load_code('example.fuse') >></div>
+		<!-- }}} -->
+
+		<hr />
+		<p>
+		This website is also host to several other FusionScript related
+		projects, like <a href="/projects/fs-vim/">VIM editor support</a>
+		and <a href="/projects/fs-boilerplate/">a boilerplate project</a>.
+		More projects can be viewed at the <a href="/projects">
+			projects page</a>. New projects are approved by Ryan.
+		<!-- ::TODO:: make FusionScript Foundation -->
+		</p>
+	</div>
+
+	<div class="mdl-cell mdl-cell--5-col">
+		<div id="updates" class="mdl-card mdl-shadow--2dp">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text">Updates</h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				<div update class="mdl-list">
+					<div class="mdl-list__item mdl-list__item--three-line" v-for="message in messages">
+						<span class="mdl-list__item-primary-content">
+							<img v-bind:src="message.avatar"
+						class="mdl-list__item-avatar" />
+							<span>{{message.author}} <small>{{message.repo}}</small></span>
+							<span class="mdl-list__item-text-body">
+								{{message.content}}
+							</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="mdl-card__actions mdl-card--border">
+				<span class="mdl-button mdl-js-button mdl-button--raised
+				mdl-button--primary mdl-js-ripple-effect"
+					v-on:click="load_updates">Reload Updates</span>
+			</div>
+		</div>
+	</div>
+
+</div>
+<% endblock %>
+
+<% block scripts %>
+<script type="text/javascript" charset="utf-8">
+var updates = new Vue({
+	el: '#updates',
+	data: {
+		messages: []
+	},
+	methods: {
+		load_updates: function() {
+			superagent.get('/updates/5').end((response)=> {
+				this.messages = response.body;
+			})
+		}
+	}
+});
+updates.load_updates();
+console.log(updates);
+</script>
+<% endblock %>

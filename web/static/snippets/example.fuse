@@ -1,0 +1,27 @@
+class Account {
+    __new(balance = 0)=> {
+        @balance = balance;
+    }
+
+    deposit(amount)=> {
+        @balance = (+ @balance amount);
+        return true;
+    }
+
+    withdraw(amount)=> {
+        if (> amount @balance)
+            return false;
+        else {
+            @balance = (- @balance amount);
+            return true;
+        }
+    }
+
+    balance()=>
+        return @balance;
+}
+
+bob = Account(500); -- 500
+bob:deposit(600);   -- 1100
+bob:withdraw(1000); -- 100
+assert(bob:withdraw(math.max)); -- errors
