@@ -66,13 +66,14 @@ class ProjectFileHandler(RequestHandler):
             if "." not in path[-1]:
                 path.append("index.html")
             del path[:1]
-            with open(os.path.join("static/web", *path)) as f:
-                ext = os.path.splitext(path[-1])[1][1:]
+            new_path = ["repos", "rendered", path[0], "docs"] + path[1:]
+            with open(os.path.join(*new_path)) as f:
+                ext = os.path.splitext(new_path[-1])[1][1:]
                 if util.types.get(ext):
                     self.set_header("Content-Type", util.types[ext])
                 return self.write(f.read())
-        except jinja2.exceptions.TemplateNotFound as e:
-            raise HTTPError(404, reason=f"File not found: {path}")
+        except FileNotFoundError as e:
+            raise HTTPError(404, reason=f"File not found: {new_path}")
 
 
 if '--debug' in sys.argv:
