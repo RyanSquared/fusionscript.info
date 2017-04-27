@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/zsh
 
 temp=
 read_and_test() {
