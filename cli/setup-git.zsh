@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 sudo userdel -r git -f
 sudo useradd -m git
 sudo usermod -s $(command -v git-shell) git
@@ -9,7 +10,7 @@ cmd() {
 dir=~git/git-shell-commands
 cmd mkdir $dir
 pushd commands >/dev/null
-for file in *; do
+for file in $(command dir); do
 	cmd tee $dir/$file < $file
 	cmd chmod u+x $dir/$file
 done

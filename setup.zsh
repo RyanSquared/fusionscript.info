@@ -2,7 +2,7 @@
 
 # Create the `git` user and install command line utilities
 pushd cli
-./setup-git.sh
+./setup-git.zsh
 popd
 
 # Install the `fs-info` package
