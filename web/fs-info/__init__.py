@@ -56,7 +56,7 @@ def get_json_for(repo, directory=repos_dir):
     _dict = {"target": repo}
     with open(os.path.join(directory, repo, '.git', 'data.json')) as f:
         _dict.update(json.loads(f.read()))
-    _dict['clone_url'] = f"https://fusionscript.info/repos/{_dict['name']}"
+    _dict['clone_url'] = f"git://fusionscript.info/repos/{_dict['name']}"
     return _dict
 
 
