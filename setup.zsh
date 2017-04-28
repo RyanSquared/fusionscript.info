@@ -31,6 +31,23 @@ NoNewPrivileges=true
 WantedBy=multi-user.target
 EOF
 
+sudo tee /etc/systemd/system/git-daemon.service <<EOF
+[Unit]
+Description=Automatically start git-daemon
+Requires=network.target
+
+[Service]
+User=git
+WorkingDirectory=/home/git/repos
+ExecStart=/usr/bin/git daemon --base-path=/home/git --export-all
+Restart=always
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 
 # Copy over SSL files
 sudo -u git tee ~git/ssl/cert.pem >/dev/null < ssl/cert.pem
