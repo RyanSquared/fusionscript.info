@@ -73,5 +73,7 @@ sudo cp -r web/{templates,static} ~git/
 sudo chown -R git:git ~git/{templates,static}
 
 # Launch the website
-sudo systemctl enable --now fs-info-website.service
+sudo systemctl enable fs-info-website.service
 sudo systemctl restart fs-info-website.service
+sudo systemctl enable git-daemon.service
+sudo systemctl restart git-daemon.service
