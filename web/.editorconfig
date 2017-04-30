@@ -1,0 +1,2 @@
+[*.py]
+#not_skip=__init__.py
