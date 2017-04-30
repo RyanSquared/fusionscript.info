@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+PYTHON=${PYTHON:=$(which python3)}
+
 # Create the `git` user and install command line utilities
 pushd cli
 ./setup-git.zsh
@@ -7,7 +9,7 @@ popd
 
 # Install the `fs-info` package
 pushd web
-sudo -H -u git pip3 install --user .
+sudo -H -u git ${PYTHON} -m pip install --user .
 popd
 
 # Preparing for launch
@@ -22,7 +24,7 @@ Requires=network.target
 [Service]
 User=git
 WorkingDirectory=/home/git
-ExecStart=/usr/bin/python3 -m fs-info
+ExecStart=${PYTHON} -m fs-info
 Restart=always
 PrivateTmp=true
 NoNewPrivileges=true
@@ -64,7 +66,8 @@ sudo -u git tee ~git/.config/fs-info/conf.json <<EOF
 	"ssl_options": {
 	    "certfile": "${CERTFILE:=ssl/cert.pem}",
 	    "keyfile": "${KEYFILE:=ssl/key.pem}"
-	}
+	},
+	"uri": "${DB_URI:=sqlite://}"
 }
 EOF
 
