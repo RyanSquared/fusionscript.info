@@ -1,41 +1,50 @@
-from flask import Flask, jsonify
+from base64 import b64decode
+from flask import Flask, jsonify, request
+from flask import session as req_session
+from .util import User, get_repos, get_values_from, repos_dir, session
+from .util import InvalidUsage, requires_auth, check_auth_for
+import bcrypt
 import json
 import os
-import subprocess
+import sqlalchemy
 
 app = Flask(__name__)
-icons = {
-    'ryansquared':
-        'https://avatars0.githubusercontent.com/u/12415837?v=3&s=460',
-    'chickennuggers':
-        'https://avatars0.githubusercontent.com/u/12415837?v=3&s=460',
-    'ryan':
-        'https://avatars0.githubusercontent.com/u/12415837?v=3&s=460',
-}
-repos_dir = os.environ.get('REPOS_DIR') or "repos"
+app.secret_key = os.urandom(24)
 
 
-def get_values_from(repo, count=10):
-    path = os.getcwd()
-    os.chdir(repo)
-    result = subprocess.run([
-        "git", "log", "--pretty=format:%ct\x01%an\x01%s", f"-{count}"
-        ], stdout=subprocess.PIPE)
-    values = [
-        dict(zip(("timestamp", "author", "content"), value.split("\x01")))
-        for value in result.stdout.decode('ascii').split('\n')]
-    for value in values:
-        value['timestamp'] = int(value['timestamp'])
-        value['repo'] = repo.split('/')[-1]
-        value['avatar'] = icons[value['author'].lower()]
-    os.chdir(path)
-    return values[::-1]
+@app.errorhandler(InvalidUsage)
+def invalid_usage_handler(error):
+    result = error.to_dict()
+    return jsonify(result), error.status_code
 
 
-def get_repos(directory=repos_dir):
-    for folder in os.listdir(directory):
-        if folder != "rendered":
-            yield folder
+@app.route('/login', methods=['POST'])
+def init_login():
+    check_auth_for(request, req_session)
+
+
+@app.route('/new/user', methods=['POST'])
+def new_user():
+    auth = b64decode(request.headers['Authentication'].split(' ')[1])
+    [username, password] = auth.decode('utf-8').split(':')
+    hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    try:
+        user = User(username=username, password=hashed_pw)
+        session.add(user)
+        session.commit()
+    except sqlalchemy.exc.IntegrityError as e:
+        session.rollback()
+        return '', 409
+    except:
+        return '', 500
+    else:
+        return ''
+
+
+@app.route('/test_login')
+@requires_auth
+def test_login():
+    return "If you see this, you are logged in."
 
 
 @app.route('/updates/<int:limit>')

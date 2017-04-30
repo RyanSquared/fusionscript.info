@@ -76,27 +76,23 @@ class ProjectFileHandler(RequestHandler):
             raise HTTPError(404, reason=f"File not found: {new_path}")
 
 
+http_server = HTTPServer(
+    Application([
+        (r'^/$', IndexHandler),
+        (r'^/web/.*', ProjectFileHandler),
+        (r'^.*.html$', TemplateHandler),
+        (r'^.*', FallbackHandler, {
+            'fallback': WSGIContainer(app)
+        }),
+    ], static_path='./static'),
+    ssl_options=util.config['ssl_options'])
 if '--debug' in sys.argv:
-    app.run(host=(util.config.get('address') or '0.0.0.0'),
-            port=(util.config.get('port') or '25562'),
-            debug=True,
-            ssl_context=tuple(util.config.get('ssl_options').values()))
-
+    http_server.listen(**{
+        option: util.config[option]
+        for option in util.config if option in ('address', 'port')})
 else:
-    http_server = HTTPServer(
-        Application([
-            (r'^/$', IndexHandler),
-            (r'^/web/.*', ProjectFileHandler),
-            (r'^.*.html$', TemplateHandler),
-            (r'^.*', FallbackHandler, {
-                'fallback': WSGIContainer(app)
-            }),
-        ], static_path='./static'),
-        ssl_options=util.config['ssl_options'])
-
     http_server.bind(**{
         option: util.config[option]
-        for option in util.config if option in ('address', 'port')
-    })
+        for option in util.config if option in ('address', 'port')})
     http_server.start(0)
-    IOLoop.instance().start()
+IOLoop.instance().start()
