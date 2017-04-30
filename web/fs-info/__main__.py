@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
-from . import app, util
+import json
+import os
+import sys
+
+import jinja2
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
+from tornado.web import Application, FallbackHandler, HTTPError, RequestHandler
 from tornado.wsgi import WSGIContainer
-from tornado.web import Application, FallbackHandler, RequestHandler
-from tornado.web import HTTPError
-import jinja2
-import json
-import sys
-import os
+
+from . import app, util
 
 print('== CONFIG ==')
 print(json.dumps(util.config, indent=4))

@@ -1,6 +1,6 @@
 from pygments.lexer import RegexLexer
-from pygments.token import Text, Keyword, Name, String, Number, Operator
-from pygments.token import Punctuation, Comment
+from pygments.token import (Comment, Keyword, Name, Number, Operator,
+                            Punctuation, String, Text)
 
 
 class FusionScriptLexer(RegexLexer):

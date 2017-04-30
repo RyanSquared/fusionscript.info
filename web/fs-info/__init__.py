@@ -1,12 +1,14 @@
-from base64 import b64decode
-from flask import Flask, jsonify, request
-from flask import session as req_session
-from .util import User, get_repos, get_values_from, repos_dir, session
-from .util import InvalidUsage, requires_auth, check_auth_for
-import bcrypt
 import json
 import os
+from base64 import b64decode
+
+import bcrypt
 import sqlalchemy
+from flask import session as req_session
+from flask import Flask, jsonify, request
+
+from .util import (InvalidUsage, User, check_auth_for, get_repos,
+                   get_values_from, repos_dir, requires_auth, session)
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)

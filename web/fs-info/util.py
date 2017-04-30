@@ -1,16 +1,18 @@
-from base64 import b64decode
-from flask import request
-from flask import session as req_session
-from pygments import highlight
-from pygments.formatters import HtmlFormatter
-from .fusionscript_pygments import FusionScriptLexer
-import bcrypt
 import functools
 import json
 import os
 import subprocess
+from base64 import b64decode
+
+import bcrypt
 import sqlalchemy
 import sqlalchemy.ext.declarative
+from flask import session as req_session
+from flask import request
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+
+from .fusionscript_pygments import FusionScriptLexer
 
 errors = [
     "Authentication failed",
