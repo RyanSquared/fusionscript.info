@@ -4,11 +4,10 @@ from base64 import b64decode
 
 import bcrypt
 import sqlalchemy
-from flask import session as req_session
 from flask import Flask, jsonify, request
 
-from .util import (InvalidUsage, User, check_auth_for, get_repos,
-                   get_values_from, repos_dir, requires_auth, session)
+from .util import (InvalidUsage, User, db_session, get_repos, get_values_from,
+                   repos_dir, requires_auth)
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -21,8 +20,9 @@ def invalid_usage_handler(error):
 
 
 @app.route('/login', methods=['POST'])
+@requires_auth
 def init_login():
-    check_auth_for(request, req_session)
+    return ''
 
 
 @app.route('/new/user', methods=['POST'])
@@ -32,10 +32,10 @@ def new_user():
     hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     try:
         user = User(username=username, password=hashed_pw)
-        session.add(user)
-        session.commit()
+        db_session.add(user)
+        db_session.commit()
     except sqlalchemy.exc.IntegrityError as e:
-        session.rollback()
+        db_session.rollback()
         return '', 409
     except:
         return '', 500

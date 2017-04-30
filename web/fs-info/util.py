@@ -50,7 +50,7 @@ Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 
 DBSession = sqlalchemy.orm.sessionmaker()
-session = DBSession()
+db_session = DBSession()
 
 lexer = FusionScriptLexer()
 formatter = HtmlFormatter()
@@ -74,7 +74,7 @@ def check_auth_for(request, session):
     auth = b64decode(request.headers['Authentication'].split(' ')[1])
     [username, password] = auth.decode('utf-8').split(':')
     try:
-        user = session.query(User).filter(User.username == username).one()
+        user = db_session.query(User).filter(User.username == username).one()
     except:
         raise InvalidUsage(
             errors[EAUTHFAILED], 401,
@@ -96,10 +96,12 @@ def requires_auth(f):
         auth = req_session.get('username')
         if auth is None:
             if request.headers.get('Authentication'):
-                return check_auth_for(request, req_session)
+                check_auth_for(request, req_session)
+                return f(*args, **kwargs)
             raise InvalidUsage(errors[ENOAUTH], 401)
         else:
             print(f"Using session for: {auth}")
+            return f(*args, **kwargs)
     return decorated
 
 
