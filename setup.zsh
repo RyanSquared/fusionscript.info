@@ -1,6 +1,11 @@
 #!/bin/zsh
 
 PYTHON=${PYTHON:=$(which python3)}
+PORT=${PORT:=25562}
+BINDHOST=${BINDHOST:=0.0.0.0}
+CERTFILE=${CERTFILE:=ssl/cert.pem}
+KEYFILE=${CERTFILE:=ssl/key.pem}
+DB_URI=${DB_URI:=sqlite://}
 
 # Create the `git` user and install command line utilities
 pushd cli
@@ -52,22 +57,26 @@ EOF
 
 
 # Copy over SSL files
-sudo -u git tee ~git/ssl/cert.pem >/dev/null < ssl/cert.pem
-sudo -u git tee ~git/ssl/key.pem >/dev/null < ssl/key.pem
+sudo -u git tee ~git/ssl/cert.pem >/dev/null < ${CERTFILE}
+sudo -u git tee ~git/ssl/key.pem >/dev/null < ${KEYFILE}
 
 # Webserver configuration
-PORT=${PORT:=25562}
-BINDHOST=${BINDHOST:=0.0.0.0}
 sudo -u git tee ~git/.config/fs-info/conf.json <<EOF
 {
 	"address": "${BINDHOST}",
 	"port": ${PORT},
 	"compress_response": true,
 	"ssl_options": {
-	    "certfile": "${CERTFILE:=ssl/cert.pem}",
-	    "keyfile": "${KEYFILE:=ssl/key.pem}"
+		"certfile": "ssl/cert.pem",
+		"keyfile": "ssl/key.pem"
 	},
-	"uri": "${DB_URI:=sqlite://}"
+	"db": {
+		"uri": "${DB_URI}",
+		"user": "${DB_USER}",
+		"pass": "${DB_PASS}"
+		"name": "${DB_NAME}",
+	}
+
 }
 EOF
 
