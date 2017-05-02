@@ -1,3 +1,8 @@
+## Requirements
+
+- `python3.6` compatible interpreter
+- a way to install TLS certificates
+
 ## Installation
 
 ```sh
