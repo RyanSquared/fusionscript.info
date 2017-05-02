@@ -24,8 +24,8 @@ chmod u+x /usr/local/bin/renew-certs-post
 
 certbot certonly --webroot -w /home/git/web -d fusionscript.info
 systemctl start fs-auto-renew-certs.timer
-sudo -u git tee /etc/letsencrypt/live/fusionscript.info/fullchain.pem < /home/git/ssl/cert.pem
-sudo -u git tee /etc/letsencrypt/live/fusionscript.info/privkey.pem < /home/git/ssl/key.pem
+sudo -u git tee ~git/ssl/cert.pem < /etc/letsencrypt/live/fusionscript.info/fullchain.pem
+sudo -u git tee ~git/ssl/key.pem < /etc/letsencrypt/live/fusionscript.info/privkey.pem
 
 systemctl start fs-info-website
 EOF
