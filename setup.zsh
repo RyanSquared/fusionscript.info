@@ -86,6 +86,8 @@ sudo chown -R git:git ~git/{templates,static}
 
 # Launch the website
 sudo systemctl enable fs-info-website.service
-sudo systemctl restart fs-info-website.service
 sudo systemctl enable git-daemon.service
 sudo systemctl restart git-daemon.service
+
+echo "Please make sure to run \`sudo systemctl enable fs-info-website.service\`"
+echo "after installing certificate and key to ~git/ssl"
