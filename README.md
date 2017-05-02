@@ -53,10 +53,8 @@ $ sudo -s
 
 ### Extra Files
 
-Files found in the `etc/<os>` directory can be useful for configuring the
-website for your file system.
-
-**Ubuntu** (`etc/ubuntu`)
+Files found in the `etc` directory can be useful for configuring the
+website for your file system. The files are almost entirely OS independent.
 
 ```
 systemd/system/fs-renew-certs.service
@@ -72,10 +70,10 @@ renewal (if required) hourly. Renewals are usually done if the certificate will
 expire in less than 30 days.
 
 Also, as a note, use
-`sudo certbot certonly --webroot -w /home/ubuntu/web -d fusionscript.info`
+`sudo certbot certonly --webroot -w /home/git/web -d fusionscript.info`
 to receive the initial certificate.
 
-These files should be installed in `systemd/system/`.
+These files should be installed in `/etc/systemd/system/`.
 
 ```
 bin/renew-certs-post
@@ -86,3 +84,5 @@ install certificates as the `git` user. When run, the script will install the
 certificates for the `$RENEWED_DOMAINS` domain list into ~git/ssl. Make sure to
 modify the script so that the domain in the script (`fusionscript.info`)
 matches the one currently used in your deployment.
+
+This file should be installed in `/usr/local/bin`.
