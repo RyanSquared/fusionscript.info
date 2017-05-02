@@ -12,7 +12,7 @@ export DB_PASS=pass
 zsh setup.zsh
 ```
 
-### Variables:
+### Variables
 
 `PYTHON` - path to Python 3.6 interpreter
 
@@ -39,3 +39,39 @@ username and a password for the URI. The URI needs to be set up using the
 SQLAlchemy format, such as `postgresql://{user}:{pass}@localhost:25563/{name}`.
 The database, if SQLite is not used, will have to be set up manually before the
 `setup.zsh` script is run, and the program does not make backups automatically.
+
+### Extra Files
+
+Files found in the `etc/<os>` directory can be useful for configuring the
+website for your file system.
+
+**Ubuntu** (`etc/ubuntu`)
+
+```
+systemd/system/fs-renew-certs.service
+systemd/system/fs-auto-renew-certs.timer
+systemd/system/fs-serve-static-web.service
+```
+
+These services (which start at multi-user, as does the website itself) will
+install certificates from a Let's Encrypt directory into the `~git/ssl`
+directory for the website to use. Make sure to modify the service files if
+you use a different domain. The included timer can be enabled to attempt a
+renewal (if required) hourly. Renewals are usually done if the certificate will
+expire in less than 30 days.
+
+Also, as a note, use
+`sudo certbot certonly --webroot -w /home/ubuntu/web -d fusionscript.info`
+to receive the initial certificate.
+
+These files should be installed in `systemd/system/`.
+
+```
+bin/renew-certs-post
+```
+
+This script is required by the `fs-renew-certs` service file to automatically
+install certificates as the `git` user. When run, the script will install the
+certificates for the `$RENEWED_DOMAINS` domain list into ~git/ssl. Make sure to
+modify the script so that the domain in the script (`fusionscript.info`)
+matches the one currently used in your deployment.
