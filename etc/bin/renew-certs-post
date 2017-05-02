@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+set -x
+
+echo "Domains: $RENEWED_DOMAINS"
+for domain in $RENEWED_DOMAINS; do
+	echo "Fixing: $domain"
+	case $domain in
+	fusionscript.info)
+		daemon_cert_root=/home/git/ssl
+		umask 077
+		
+		echo "Copying files for: $RENEWED_LINEAGE to: $daemon_cert_root"
+		cp "$RENEWED_LINEAGE/fullchain.pem" "$daemon_cert_root/cert.pem"
+		cp "$RENEWED_LINEAGE/privkey.pem" "$daemon_cert_root/key.pem"
+
+		chown git "$daemon_cert_root/cert.pem" "$daemon_cert_root/key.pem"
+		chmod 400 "$daemon_cert_root/cert.pem" "$daemon_cert_root/key.pem"
+
+		systemctl restart fs-info-website
+		;;
+	esac
+done
+

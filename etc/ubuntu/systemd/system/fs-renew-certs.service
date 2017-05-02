@@ -1,0 +1,13 @@
+[Unit]
+Description=Install certificates for FusionScript website
+Requires=network.target
+# MUST be run to enable webhook renewal
+Requires=fs-serve-static-web.service
+
+[Service]
+User=root
+WorkingDirectory=/home/git
+ExecStart=/usr/bin/certbot renew --webroot -w /home/ubuntu/web --renew-hook=/usr/local/bin/renew-certs-post
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Automatically renew certificates for FusionScript website
+Requires=network.target
+
+[Timer]
+OnUnitActiveSec=20d
+Unit=fs-renew-certs.service
+
+[Install]
+WantedBy=multi-user.target
