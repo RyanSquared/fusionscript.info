@@ -73,8 +73,8 @@ sudo -u git tee ~git/.config/fs-info/conf.json <<EOF
 	"db": {
 		"uri": "${DB_URI}",
 		"user": "${DB_USER}",
-		"pass": "${DB_PASS}"
-		"name": "${DB_NAME}",
+		"pass": "${DB_PASS}",
+		"name": "${DB_NAME}"
 	}
 
 }
