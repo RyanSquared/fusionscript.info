@@ -2,6 +2,8 @@
 
 setopt -x
 
+[ "$UID" -eq 0 ] || exec sudo zsh "$0"
+
 PYTHON=${PYTHON:=$(which python3)}
 PORT=${PORT:=25562}
 BINDHOST=${BINDHOST:=0.0.0.0}
@@ -26,23 +28,23 @@ popd
 
 # Set up certbot
 if $WITH_CERTBOT; then
-	sudo cp etc/systemd/system/* /etc/systemd/system
-	sudo systemctl enable fs-serve-static-web.service
-	sudo systemctl enable fs-renew-certs.service
-	sudo systemctl enable fs-auto-renew-certs.timer
-	sudo tee /usr/local/bin/renew-certs-post < etc/bin/renew-certs-post
-	sudo chmod u+x /usr/local/bin/renew-certs-post
-	sudo systemctl start fs-serve-static-web.service
+	cp etc/systemd/system/* /etc/systemd/system
+	systemctl enable fs-serve-static-web.service
+	systemctl enable fs-renew-certs.service
+	systemctl enable fs-auto-renew-certs.timer
+	tee /usr/local/bin/renew-certs-post < etc/bin/renew-certs-post
+	chmod u+x /usr/local/bin/renew-certs-post
+	systemctl start fs-serve-static-web.service
 	mkdir web
 	pushd web
 	$PYTHON -m http.server ${HTTP_PORT}
 	server_pid=$!
-	sudo certbot certonly --webroot -w $PWD -d ${DOMAIN}
+	certbot certonly --webroot -w $PWD -d ${DOMAIN}
 	kill $server_pid
 	popd
 	rmdir web
-	sudo systemctl start fs-auto-renew-certs.timer
-	sudo systemctl restart fs-renew-certs.service
+	systemctl start fs-auto-renew-certs.timer
+	systemctl restart fs-renew-certs.service
 fi
 
 # Install the `fs-info` package
@@ -54,7 +56,7 @@ popd
 sudo -u git mkdir -p ~git/{repos{,/rendered},web,.config/fs-info,ssl}
 
 # Systemd service file
-sudo tee /etc/systemd/system/fs-info-website.service <<EOF
+tee /etc/systemd/system/fs-info-website.service <<EOF
 [Unit]
 Description=FusionScript website, in Python 3
 Requires=network.target
@@ -71,7 +73,7 @@ NoNewPrivileges=true
 WantedBy=multi-user.target
 EOF
 
-sudo tee /etc/systemd/system/git-daemon.service <<EOF
+tee /etc/systemd/system/git-daemon.service <<EOF
 [Unit]
 Description=Automatically start git-daemon
 Requires=network.target
@@ -116,11 +118,11 @@ sudo -u git tee ~git/.config/fs-info/conf.json <<EOF
 EOF
 
 # Copy over webserver static files
-sudo cp -r web/{templates,static} ~git/
-sudo chown -R git:git ~git/{templates,static}
+cp -r web/{templates,static} ~git/
+chown -R git:git ~git/{templates,static}
 
 # Launch the website
-sudo systemctl enable fs-info-website.service
-sudo systemctl enable git-daemon.service
-sudo systemctl restart fs-info-website.service
-sudo systemctl restart git-daemon.service
+systemctl enable fs-info-website.service
+systemctl enable git-daemon.service
+systemctl restart fs-info-website.service
+systemctl restart git-daemon.service
