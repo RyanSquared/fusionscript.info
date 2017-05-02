@@ -4,8 +4,8 @@ Requires=network.target
 
 [Service]
 User=root
-WorkingDirectory=/home/ubuntu/web
-ExecStart=python3 -m http.server 80
+WorkingDirectory=/home/git/web
+ExecStart=python3 -m http.server 25563
 Restart=always
 
 [Install]
