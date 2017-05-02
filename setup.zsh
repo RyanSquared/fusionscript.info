@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+setopt -x
+
 PYTHON=${PYTHON:=$(which python3)}
 PORT=${PORT:=25562}
 BINDHOST=${BINDHOST:=0.0.0.0}
