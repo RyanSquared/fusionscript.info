@@ -40,6 +40,17 @@ SQLAlchemy format, such as `postgresql://{user}:{pass}@localhost:25563/{name}`.
 The database, if SQLite is not used, will have to be set up manually before the
 `setup.zsh` script is run, and the program does not make backups automatically.
 
+## iptables
+
+The below rules will forward port 25562 to 443 (TLS for the webserver) and port
+25563 for 80 (plaintext for certbot domain authentication).
+
+```sh
+$ sudo -s
+# iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 25562
+# iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 25563
+```
+
 ### Extra Files
 
 Files found in the `etc/<os>` directory can be useful for configuring the
