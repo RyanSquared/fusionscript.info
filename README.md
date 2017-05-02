@@ -10,6 +10,25 @@ export DB_URI=sqlite://
 export DB_USER=user
 export DB_PASS=pass
 zsh setup.zsh
+sudo sh <<EOF
+iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 25562
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 25563
+
+cp ./etc/systemd/system/* /etc/systemd/system
+systemctl enable fs-serve-static-web.service
+systemctl start fs-serve-static-web.service
+systemctl enable fs-renew-certs.service
+systemctl enable fs-auto-renew-certs.timer
+tee /usr/local/bin/renew-certs-pots < etc/bin/renew-certs-post
+chmod u+x /usr/local/bin/renew-certs-post
+
+certbot certonly --webroot -w /home/git/web -d fusionscript.info
+systemctl start fs-auto-renew-certs.timer
+sudo -u git tee /etc/letsencrypt/live/fusionscript.info/fullchain.pem < /home/git/ssl/cert.pem
+sudo -u git tee /etc/letsencrypt/live/fusionscript.info/privkey.pem < /home/git/ssl/key.pem
+
+systemctl start fs-info-website
+EOF
 ```
 
 ### Variables
