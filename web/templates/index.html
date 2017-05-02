@@ -19,17 +19,27 @@
 			Lua and runs on a modified Lua runtime.
 		</p>
 		<p>
-		<a class="mdl-button mdl-js-button mdl-button--raised
-			mdl-js-ripple-effect"
-			href="/web/fusionscript/">Getting Started</a>
-		<a class="mdl-button mdl-js-button mdl-button--raised
-			mdl-button--primary mdl-js-ripple-effect"
-			href="/projects.html#fusionscript">Download Now</a>
+			<a class="mdl-button mdl-js-button mdl-button--raised
+				mdl-js-ripple-effect"
+				href="/web/fusionscript/">Getting Started</a>
+			<a class="mdl-button mdl-js-button mdl-button--raised
+				mdl-button--primary mdl-js-ripple-effect"
+				href="/projects.html#fusionscript">Download Now</a>
+			<a href="https://luarocks.org/modules/alissasquared/fusionscript"
+				target="_blank" class="mdl-button mdl-js-button mdl-button--raised
+				mdl-button--primary mdl-js-ripple-effect">LuaRocks</a>
 		</p>
 
-		<h4>Code Example</h4><!-- {{{ Code Example -->
+		<p md-font>
+			FusionScript currently is transformed into an AST by a lexer, then
+			transpiled to Lua code. In the future, there are plans for the language
+			to use it's own custom VM based on the Lua one. FusionScript can also be
+			compiled to Lua 5.3 code by Lua 5.1, 5.2, 5.3, and LuaJIT, but must be
+			run using Lua 5.3.
+		</p>
+
+		<h4>Code Example</h4>
 		<div class="mdl-shadow--2dp"><< load_code('example.fuse') >></div>
-		<!-- }}} -->
 
 		<hr />
 		<p>

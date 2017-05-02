@@ -24,9 +24,8 @@
 			}
 
 			.mdl-layout__content {
-				padding: 24px;
+				padding-top: 24px;
 				width: 100%;
-				margin: auto;
 			}
 			p {
 				width: 100%;
@@ -39,6 +38,9 @@
 			}
 			[lg-font] {
 				font-size: 1.2em;
+			}
+			[md-font] {
+				font-size: 1.1em;
 			}
 
 			[center] {
@@ -70,30 +72,14 @@
 					<div class="mdl-layout-spacer"></div>
 					<nav class="mdl-navigation">
 						<a class="mdl-navigation__link" href="/">Home</a>
+						<a class="mdl-navigation__link" href="/projects.html">Projects</a>
+						<a class="mdl-navigation__link" href="/issues.html">Issues Feed</a>
+						<a class="mdl-navigation__link" href="/patches.html">Patches</a>
+						<a class="mdl-navigation__link" href="/faq.html">FAQ</a>
+						<a class="mdl-navigation__link" href="/licensing.html">Licensing</a>
 					</nav>
 				</div>
 			</header>
-
-			<div class="mdl-layout__drawer">
-				<span class="mdl-layout-title">Navigation</span>
-				<nav class="mdl-navigation">
-					<a class="mdl-navigation__link" href="/">Home</a>
-					<a class="mdl-navigation__link" href="/projects.html">Projects</a>
-					<a class="mdl-navigation__link" href="/issues.html">Issues Feed</a>
-					<a class="mdl-navigation__link" href="/patches.html">Link</a>
-					<a class="mdl-navigation__link" href="/faq.html">FAQ</a>
-					<a class="mdl-navigation__link" href="/licensing.html">Licensing</a>
-					<hr />
-					<div>
-						<div class="mdl-textfield mdl-js-textfield">
-							<input class="mdl-textfield__input" type="password" id="login">
-							<label class="mdl-textfield__label" for="login">
-								<span>Authorization</span></label>
-						</div>
-						<span class="mdl-navigation__link" x-for="login">Log In</span>
-					</div>
-				</nav>
-			</div>
 
 			<main class="mdl-layout__content">
 				<div container>
@@ -106,7 +92,7 @@
 		document.querySelector('[x-for=login]').onclick = function() {
 			var auth = document.querySelector('#login').value;
 			superagent.post('/login')
-				.set('Authentication', 'Basic ' + btoa(auth))
+				.set('Authorization', 'Basic ' + btoa(auth))
 				.end((response)=> console.log(response));
 		};
 		</script>

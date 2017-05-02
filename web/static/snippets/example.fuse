@@ -1,27 +1,15 @@
-class Account {
-    __new(balance = 0)=> {
-        @balance = balance;
-    }
+using *;
 
-    deposit(amount)=> {
-        @balance = (+ @balance amount);
-        return true;
-    }
+local {assert} = require("stdlib.error");
 
-    withdraw(amount)=> {
-        if (> amount @balance)
-            return false;
-        else {
-            @balance = (- @balance amount);
-            return true;
-        }
-    }
+interface Animal { genus; species; }
 
-    balance()=>
-        return @balance;
+class Person implements Animal {
+	genus = "Homo";
+	species = "Sapien";
+
+	__new(name)=> {
+		assert.is(name, "string");
+		@name = name;
+	}
 }
-
-bob = Account(500); -- 500
-bob:deposit(600);   -- 1100
-bob:withdraw(1000); -- 100
-assert(bob:withdraw(math.max)); -- errors
