@@ -27,7 +27,7 @@ def init_login():
 
 @app.route('/new/user', methods=['POST'])
 def new_user():
-    auth = b64decode(request.headers['Authentication'].split(' ')[1])
+    auth = b64decode(request.headers['Authorization'].split(' ')[1])
     [username, password] = auth.decode('utf-8').split(':')
     hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     try:

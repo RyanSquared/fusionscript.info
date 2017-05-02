@@ -15,7 +15,7 @@ from pygments.formatters import HtmlFormatter
 from .fusionscript_pygments import FusionScriptLexer
 
 errors = [
-    "Authentication failed",
+    "Authorization failed",
     "User not logged in",
     "User not found",
     "Incorrect password"
@@ -45,7 +45,7 @@ class User(Base):
         sqlalchemy.String(), nullable=False)
 
 
-engine = sqlalchemy.create_engine(config["uri"])
+engine = sqlalchemy.create_engine(config["db"]["uri"].format(**config["db"]))
 Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 
@@ -71,7 +71,7 @@ class InvalidUsage(Exception):
 
 
 def check_auth_for(request, session):
-    auth = b64decode(request.headers['Authentication'].split(' ')[1])
+    auth = b64decode(request.headers['Authorization'].split(' ')[1])
     [username, password] = auth.decode('utf-8').split(':')
     try:
         user = db_session.query(User).filter(User.username == username).one()
@@ -95,7 +95,7 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         auth = req_session.get('username')
         if auth is None:
-            if request.headers.get('Authentication'):
+            if request.headers.get('Authorization'):
                 check_auth_for(request, req_session)
                 return f(*args, **kwargs)
             raise InvalidUsage(errors[ENOAUTH], 401)
