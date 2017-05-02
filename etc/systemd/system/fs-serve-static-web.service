@@ -3,7 +3,7 @@ Description=Serve static files from /home/ubuntu/web (for certbot)
 Requires=network.target
 
 [Service]
-User=root
+User=git
 WorkingDirectory=/home/git/web
 ExecStart=python3 -m http.server 25563
 Restart=always
