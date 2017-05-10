@@ -6,7 +6,7 @@ import sys
 from tornado.ioloop import IOLoop
 
 from . import util
-from .tornado import http_server
+from .server import http_server
 
 print('== CONFIG ==')
 print(json.dumps(util.config, indent=4))

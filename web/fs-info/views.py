@@ -2,12 +2,9 @@ import os
 
 import jinja2
 
-from tornado.httpserver import HTTPServer
-from tornado.web import Application, FallbackHandler, HTTPError, RequestHandler
-from tornado.wsgi import WSGIContainer
+from tornado.web import HTTPError, RequestHandler
 
-from .flask import app
-from .util import config, load_code, types
+from .util import load_code, types
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(['templates']),
@@ -57,15 +54,3 @@ class ProjectFileHandler(RequestHandler):
                 return self.write(f.read())
         except FileNotFoundError as e:
             raise HTTPError(404, reason=f"File not found: {new_path}")
-
-
-http_server = HTTPServer(
-    Application([
-        (r'^/$', IndexHandler),
-        (r'^/web/.*', ProjectFileHandler),
-        (r'^.*.html$', TemplateHandler),
-        (r'^.*', FallbackHandler, {
-            'fallback': WSGIContainer(app)
-        }),
-    ], static_path='./static'),
-    ssl_options=config['ssl_options'])
